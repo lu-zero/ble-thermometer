@@ -1,9 +1,9 @@
 use std::str::FromStr;
 use std::sync::Arc;
-use std::time::SystemTime;
 
 use btleplug::api::{Central, CentralEvent, Manager, Peripheral, ScanFilter};
 use btleplug::platform::{self, Adapter, PeripheralId};
+use chrono::{DateTime, Local};
 use futures::{Stream, StreamExt};
 use uuid::Uuid;
 
@@ -13,7 +13,7 @@ pub struct Record {
     pub temp: f32,
     pub humi: f32,
     pub batt: f32,
-    pub date: SystemTime,
+    pub date: DateTime<Local>,
 }
 
 pub struct Scanner {
@@ -34,7 +34,7 @@ fn parse_atc_data(name: String, data: &[u8]) -> Option<Record> {
     let humi = i16::from_le_bytes(humi.try_into().unwrap()) as f32 / 100.0;
     // let vbat = u16::from_le_bytes(vbat.try_into()?);
     let batt = bat[0] as f32;
-    let date = SystemTime::now();
+    let date = Local::now();
     Some(Record {
         name,
         temp,
@@ -71,7 +71,7 @@ fn parse_govee_data(name: String, data: &[u8]) -> Option<Record> {
         let humi = (temp_humi % 1000) as f32 / 10.0;
         let batt = bat[0] as f32;
 
-        let date = SystemTime::now();
+        let date = Local::now();
 
         Some(Record {
             name,
