@@ -11,3 +11,4 @@ tokio = { version = "1.17.0", features = ["macros", "rt", "rt-multi-thread"] }
 uuid = "1"
 futures = "0.3.21"
 chrono = "0.4.31"
+gluesql = "0.15.0"
